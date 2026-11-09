@@ -1,0 +1,6 @@
+{
+  "name": "Firebase Cloud Hub",
+  "description": "A secure collaborative workspace powered by Firebase Authentication and Firestore real-time cloud database.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

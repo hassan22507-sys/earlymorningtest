@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "Display name of the user" },
+        "photoURL": { "type": "string", "description": "Avatar photo URL" },
+        "role": { "type": "string", "description": "Role of the user, e.g. member" },
+        "createdAt": { "type": "string", "description": "Account timestamp" },
+        "updatedAt": { "type": "string", "description": "Last update timestamp" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Item": {
+      "title": "Item",
+      "description": "A workspace task, note, or document item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier" },
+        "title": { "type": "string", "description": "Title of item", "maxLength": 120 },
+        "description": { "type": "string", "description": "Detailed text content", "maxLength": 2000 },
+        "category": { "type": "string", "enum": ["task", "note", "milestone", "idea"] },
+        "priority": { "type": "string", "enum": ["low", "medium", "high", "urgent"] },
+        "status": { "type": "string", "enum": ["todo", "in_progress", "completed"] },
+        "ownerId": { "type": "string", "description": "Creator user UID" },
+        "ownerEmail": { "type": "string", "description": "Creator email" },
+        "ownerName": { "type": "string", "description": "Creator display name" },
+        "tags": { "type": "array", "description": "List of tags" },
+        "createdAt": { "type": "string", "description": "ISO timestamp created" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp updated" }
+      },
+      "required": ["title", "ownerId", "ownerEmail", "status", "category", "priority"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "Audit and event log for workspace actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Activity log identifier" },
+        "userId": { "type": "string", "description": "User UID who performed action" },
+        "userEmail": { "type": "string", "description": "User email address" },
+        "action": { "type": "string", "description": "Action performed", "maxLength": 64 },
+        "targetTitle": { "type": "string", "description": "Name or title of targeted resource", "maxLength": 120 },
+        "createdAt": { "type": "string", "description": "Timestamp of action" }
+      },
+      "required": ["userId", "action", "targetTitle"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profiles indexed by their auth UID"
+    },
+    "/items/{itemId}": {
+      "schema": { "$ref": "#/entities/Item" },
+      "description": "Workspace items managed collaboratively"
+    },
+    "/activities/{activityId}": {
+      "schema": { "$ref": "#/entities/Activity" },
+      "description": "Recent actions feed"
+    }
+  }
+}
